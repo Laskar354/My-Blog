@@ -1,0 +1,50 @@
+@extends('dashboard.layouts.main')
+
+@section('container')
+    <div class="d-flex justify-content-between flex-wrap flex-md-nowrap align-items-center pt-3 pb-2 mb-3 border-bottom">
+        <h1 class="h2">Post Categories</h1>
+    </div>
+
+    <a href="/dashboard/categories/create" class="text-decoration-none btn btn-success mb-3"><i class="bi bi-plus-circle"></i> Add Category</a>
+
+    <div class="col-lg-8">
+        @if (session()->has('success'))
+        <div class="alert alert-info" role="alert">
+            {{session('success')}}
+        </div>
+        @endif
+    </div>
+
+    <div class="table-responsive col-lg-8">
+        <table class="table table-striped table-sm">
+
+            <thead>
+                <tr>
+                <th scope="col">#</th>
+                <th scope="col">Cateogry Name</th>
+                <th scope="col" class="text-center">Action</th>
+                </tr>
+            </thead>
+
+            <tbody>
+                @foreach ($categories as $category)
+                <tr>
+                <td>{{$loop->iteration}}</td>
+                <td>{{$category->name}}</td>
+                <td class="justify-content-center d-flex">
+                    {{-- Route itu bisa menggunakan route.name atau route saja --}}
+                    <a href="#" class="badge bg-info"><span data-feather="eye"></span></a>
+                    <a href="#" class="badge bg-warning mx-2"><span data-feather="edit"></span></a>
+                    <form action="{{route('posts.delete', $category->slug)}}" method="post">
+                        @method('delete')
+                        @csrf
+                        <button type="submit" onclick="return confirm('Yakin tod?')" class="badge bg-danger border-0"><span data-feather="trash-2"></span></button>
+                    </form>
+                </td>
+                </tr>
+                @endforeach
+            </tbody>
+
+        </table>
+    </div>
+@endsection
